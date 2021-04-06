@@ -2,9 +2,27 @@ sudo: required
 language: node
 services:
   - docker
-
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl
-  - gcloud auth activate-service-account --key-file servoce-account.json
+  - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud config set project k8s-demo-309903
+  - gcloud config set compute/region northamerica-northeast1
+  - gcloud container clusters get-credentials k8s-demo-cluster-1
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t abbottqwq/react-dev -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true abbottqwq/react-dev npm test
+
+deploy:
+  provider: script
+  script: zsh ./deploy.sh
+  on:
+    branch: main
+      
