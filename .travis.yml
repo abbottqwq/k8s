@@ -23,7 +23,7 @@ script:
 
 deploy:
   provider: script
-  script: zsh ./deploy.sh
+  script: bash ./deploy.sh
   on:
     branch: main
       
