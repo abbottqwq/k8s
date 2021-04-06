@@ -15,6 +15,13 @@ spec:
       containers:
         - name: server
           image: abbottqwq/multi-server
+          resources:
+            requests:
+              memory: "200Mi"
+              cpu: "300m"
+            limits:
+              memory: "500Mi"
+              cpu: "700m"
           ports:
             - containerPort: 5000
           env:
@@ -35,3 +42,5 @@ spec:
                 secretKeyRef:
                   name: pgpassword
                   key: PGPASSWORD
+
+      
