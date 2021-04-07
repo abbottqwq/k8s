@@ -15,5 +15,12 @@ spec:
       containers:
         - name: redis
           image: redis
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "300m"
+            limits:
+              memory: "1000Mi"
+              cpu: "700m"
           ports:
             - containerPort: 6379
