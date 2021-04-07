@@ -4,6 +4,11 @@ metadata:
   name: server-deployment
 spec:
   replicas: 3
+  strategy:
+     type: RollingUpdate
+     rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
   selector:
     matchLabels:
       component: server
@@ -11,6 +16,7 @@ spec:
     metadata:
       labels:
         component: server
+    
     spec:
       containers:
         - name: server
